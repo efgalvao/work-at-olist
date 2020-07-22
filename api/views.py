@@ -3,12 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.shortcuts import get_object_or_404
-from .serializers import BookSerializer
-from .models import Book
-from rest_framework import viewsets
+from .serializers import BookSerializer, AuthorSerializer
+from .models import Book, Author
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 
-class BookViewset(viewsets.ModelViewSet):
+class BookViewset(ModelViewSet):
     """
     A simple ViewSet for CRUD operations with Books.
     """
@@ -36,7 +37,7 @@ class BookViewset(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = Book.objects.get(id=pk)
-        book = get_object_or_404(queryset, pk=pk)
+        book = get_object_or_404(Book, pk=pk)
         serializer = BookSerializer(book)
         return Response(serializer.data)
 
@@ -58,3 +59,16 @@ class BookViewset(viewsets.ModelViewSet):
         book = Book.objects.get(id=pk)
         book.delete()
         return Response("Book removed")
+
+class AuthorAPIView(RetrieveAPIView):
+    """
+    A View for Authors data.
+    """
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    permission_classes = []
+
+    def get(self, request, pk=None):
+        queryset = Author.objects.get(id=pk)
+        author = AuthorSerializer(queryset)
+        return Response(author.data)
