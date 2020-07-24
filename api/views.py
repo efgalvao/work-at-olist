@@ -10,6 +10,8 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from django_filters.rest_framework.backends import DjangoFilterBackend
+from .filters import BookFilter
+
 
 
 class BookViewset(ModelViewSet):
@@ -86,5 +88,6 @@ class AuthorSearchView(ListAPIView):
 class Search(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSearchSerializer
+    filter_class = BookFilter
     filter_backends = [DjangoFilterBackend]
     filter_fields = ['name', 'edition', 'publication_year', 'authors']
