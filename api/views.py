@@ -13,7 +13,6 @@ from django_filters.rest_framework.backends import DjangoFilterBackend
 from .filters import BookFilter
 
 
-
 class BookViewset(ModelViewSet):
     """
     A simple ViewSet for CRUD operations with Books.
