@@ -1,4 +1,4 @@
-##Project Description:
+## Project Description:
 
 This project is built on Python and Django Rest Framework, it provides a REST API for a library to store book and authors data. 
 
@@ -7,7 +7,7 @@ https://github.com/olist/work-at-olist
  
 
 
-##Instalation instructions:
+## Instalation instructions:
 
 To run this project it's necessary to have python >= 3.5 installed and follow the steps below:
 
@@ -51,7 +51,7 @@ $ python3 manage.py runserver
 $ python3 manage.py test
 ```
 
-##This application is deployed on heroku: 
+## This application is deployed on heroku: 
 ### https://library-api-olist.herokuapp.com/
 
 
