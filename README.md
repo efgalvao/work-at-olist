@@ -1,13 +1,17 @@
-## Project Description:
+##Project Description:
 
 This project is built on Python and Django Rest Framework, it provides a REST API for a library to store book and authors data. 
+
+It uses a PostgreSQL Database instead of Sqlite3 because it has a some features which can make the project better with him.
+For performance reason, while testing, the project uses a Sqlite3 DB.
+
 
 This project was made following the instructions from the work at olist challenge:
 https://github.com/olist/work-at-olist
  
 
 
-## Instalation instructions:
+##Instalation instructions:
 
 To run this project it's necessary to have python >= 3.5 installed and follow the steps below:
 
@@ -32,6 +36,33 @@ $ pip install -r requirements.txt
 ```
 SECRET_KEY=YourSecretKey
 ```
+### Installing PostgreSQL and configuring(if you don't have it):
+* Install PostgreSQL Database and some dependencies:
+```
+$ sudo apt-get install postgresql postgresql-contrib
+```
+* Create a user and database:
+```
+$ sudo apt-get install postgresql postgresql-contrib
+$ sudo -u postgres psql
+postgres=# CREATE DATABASE mydb;
+postgres=# CREATE USER myuser WITH ENCRYPTED PASSWORD 'mypass';
+```
+* Modify connection parameters:
+```
+postgres=# ALTER ROLE myuser SET client_encoding TO 'utf8';
+postgres=# postgres=#ALTER ROLE myuser SET default_transaction_isolation TO 'read committed';
+postgres=# ALTER ROLE myuser SET timezone TO 'UTC';
+```
+* Grant permission to the user:
+``` 
+postgres=# GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+```
+* Exit PostgreSQL:
+```  
+postgres=# \q
+```
+### Back to Python
 * Migrate the database:
 ```
 $ python3 manage.py makemigrations
@@ -51,7 +82,7 @@ $ python3 manage.py runserver
 $ python3 manage.py test
 ```
 
-## This application is deployed on heroku: 
+##This application is deployed on heroku: 
 ### https://library-api-olist.herokuapp.com/
 
 

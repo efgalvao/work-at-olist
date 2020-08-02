@@ -1,5 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
 import pandas as pd
+from django.core.management.base import BaseCommand, CommandError
 from sqlalchemy import create_engine
 
 
@@ -8,24 +8,40 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('file', type=str)
-    
 
-    def handle(self, *args, **kwargs):
+        # Named (optional) arguments for testing purpose
+        parser.add_argument(
+            '--test',
+            action='store_true',
+            help='Test command with a Sqlite3 DB',
+        )
+
+    def handle(self, *args, **options):
+
         try:
-            file = kwargs['file']
+            file = options['file']
         except FileNotFoundError:
             raise CommandError("File not found")
         except TypeError:
             raise CommandError("A CSV type file is required")
 
-        try:
-            dfs = pd.read_csv(file, index_col='name', chunksize=10000)
+        if options['test']:
             engine = create_engine('sqlite:///db.sqlite3')
-            sqlite_connection = engine.connect()
-            sqlite_table = "api_author"
-            for df in dfs:
-                df.to_sql(sqlite_table, sqlite_connection, if_exists='append')
-            sqlite_connection.close()
-            self.stdout.write(self.style.SUCCESS(f"Successfully imported authors."))
+            connection = engine.connect()
+
+        else:
+            engine = create_engine('postgresql+psycopg2://myuser:mypass@localhost/mydb')
+            connection = engine.connect()
+
+        try:
+            for df in pd.read_csv(file, chunksize=1000):
+                df.to_sql(
+                    'api_author',
+                    connection,
+                    index=False,
+                    if_exists='append'  # if the table already exists, append data
+                )
+            connection.close()
+            self.stdout.write(self.style.SUCCESS(f"Successfully imported {file}"))
         except Exception:
-            raise CommandError("There was an error while importing the file")
+            raise CommandError(f"There was an error while importing {file}")

@@ -1,11 +1,11 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
+from django_filters import rest_framework as filters
 from rest_framework import status
 from rest_framework.filters import SearchFilter
-from django_filters import rest_framework as filters
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+
 from .models import Author, Book
 from .serializers import AuthorSerializer, BookSerializer
-
 
 
 class AuthorViewSet(ModelViewSet):
@@ -20,7 +20,6 @@ class BookView(ModelViewSet):
     queryset = Book.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('name', 'edition', 'publication_year', 'authors')
-
 
     def create(self, request, *args, **kwargs):
         """
