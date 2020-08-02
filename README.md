@@ -1,4 +1,4 @@
-##Project Description:
+## Project Description:
 
 This project is built on Python and Django Rest Framework, it provides a REST API for a library to store book and authors data. 
 
@@ -11,13 +11,13 @@ https://github.com/olist/work-at-olist
  
 
 
-##Instalation instructions:
+## Instalation instructions:
 
 To run this project it's necessary to have python >= 3.5 installed and follow the steps below:
 
 * Clone the github repository:
 ```
-    $ git clone https://github.com/efgalvao/work-at-olist
+$ git clone https://github.com/efgalvao/work-at-olist
 ``` 
 
 * Create a virtual environment:
